@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+    <CodeSnippet Format="1.0.0">
+        <Header>
+            <Title>Cclass</Title>
+            <Author>Kovyazin Alexander</Author>
+            <Description>Inserts C class.</Description>
+            <Shortcut>Cclass</Shortcut>
+            <SnippetTypes>
+                <SnippetType>Expansion</SnippetType>
+                <SnippetType>SurroundsWith</SnippetType>
+            </SnippetTypes>
+        </Header>
+        <Snippet>
+            <Declarations>
+                <Literal>
+                    <ID>name</ID>
+                    <ToolTip>Struct name</ToolTip>
+                    <Default>MyC</Default>
+                </Literal>
+                <Literal>
+                    <ID>basetype</ID>
+                    <ToolTip>Base class type</ToolTip>
+                    <Default>void</Default>
+                </Literal>
+                <Literal>
+                    <ID>base</ID>
+                    <ToolTip>Base class name</ToolTip>
+                    <Default>basePtr</Default>
+                </Literal>
+                <Literal>
+                    <ID>fieldType</ID>
+                    <ToolTip>Field type</ToolTip>
+                    <Default>int</Default>
+                </Literal>
+                <Literal>
+                    <ID>fieldName</ID>
+                    <ToolTip>Field name</ToolTip>
+                    <Default>field</Default>
+                </Literal>
+            </Declarations>
+            <Code Language="cpp">
+                <![CDATA[
+                        typedef struct _$name$_CLASS $name$_CLASS;
+                        typedef void (__cdecl *$name$_METHOD) ($name$_CLASS *This, $fieldType$ $fieldName$);
+
+                        $name$_CLASS* $name$Constructor($basetype$* basePtr, $fieldType$ $fieldName$);
+                        $name$_CLASS* $name$Destructor($name$_CLASS *object);
+                        void $name$Method($name$_CLASS *This, $fieldType$ $fieldName$);
+
+                        struct _$name$_CLASS
+	                    {
+                            // Inherited from $basetype$.
+                            $basetype$  *_$base$;
+                           
+                            $fieldType$ $fieldName$;
+                            
+                            $name$_METHOD Method;
+		                    $selected$$end$
+	                    };
+                         
+                        $name$_CLASS* $name$Constructor($basetype$* $base$, $fieldType$ $fieldName$)
+                        {
+                            $name$_CLASS *object = ($name$_CLASS *)malloc(sizeof($name$_CLASS));
+                            object->_$base$      = $base$;
+                            object->$fieldName$  = $fieldName$;
+                            object->Method       = $name$Method;
+                            return object;
+                        }
+
+                        $name$_CLASS* $name$Destructor($name$_CLASS *object)
+                        {
+                            free(object);
+                            return NULL;
+                        }
+
+                        void $name$Method($name$_CLASS *This, $fieldType$ newFieldValue)
+                        {
+                            This->$fieldName$ = newFieldValue;
+                            return;
+                        }
+                        ]]>
+                         
+            </Code>
+        </Snippet>
+
+    </CodeSnippet>
+</CodeSnippets>
